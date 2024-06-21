@@ -77,7 +77,7 @@ func (cq *CoordinateQueue) dequeue() (Coordinate, error) {
 	return popped, nil
 }
 
-func (g Grid) valid_neighboors(x, y int) []Coordinate {
+func (g *Grid) valid_neighboors(x, y int) []Coordinate {
 	list := []Coordinate{}
 	if x > 0 {
 		list = append(list, Coordinate{x: x - 1, y: y, val: &g.arr[x-1][y]})
@@ -94,11 +94,11 @@ func (g Grid) valid_neighboors(x, y int) []Coordinate {
 	return list
 }
 
-func (g Grid) mark_neighboors(c Coordinate, val byte, cq *CoordinateQueue) {
+func (g *Grid) mark_neighboors(c Coordinate, val byte, cq *CoordinateQueue) {
 	*c.val = val
 	for _, n := range g.valid_neighboors(c.x, c.y) {
 		if *n.val == 1 {
-			cq.enqueue(&g, n.x, n.y)
+			cq.enqueue(g, n.x, n.y)
 		}
 	}
 	popped, err := cq.dequeue()
@@ -107,11 +107,11 @@ func (g Grid) mark_neighboors(c Coordinate, val byte, cq *CoordinateQueue) {
 	}
 }
 
-func (g Grid) get_coordinate(x, y int) Coordinate {
+func (g *Grid) get_coordinate(x, y int) Coordinate {
 	return Coordinate{x: x, y: y, val: &g.arr[x][y]}
 }
 
-func (g Grid) paint_islands() byte {
+func (g *Grid) paint_islands() byte {
 	var marking byte = 1
 	var coordinate_queue CoordinateQueue = CoordinateQueue{}
 	for i := range g.m {
