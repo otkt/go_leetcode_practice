@@ -27,11 +27,11 @@ func getgrid() [][]byte {
 	return result
 }
 
-func main() {
-	grid := getgrid()
-	islands := numIslands(grid)
-	print(islands)
-}
+// func main() {
+// 	grid := getgrid()
+// 	islands := numIslands(grid)
+// 	print(islands)
+// }
 
 func numIslands(grid [][]byte) int {
 	make_byte_array_non_retarded(&grid)
