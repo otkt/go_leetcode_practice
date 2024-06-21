@@ -1,5 +1,21 @@
+// TODO: Implement parallel merge sort then benchmark
 package main
 
+// MergeSort is a recursive function that implements the merge sort algorithm to sort a slice of integers.
+// It divides the input slice into two halves, recursively sorts each half, and then merges the two sorted halves
+// into a single sorted slice.
+//
+// Parameters:
+//   - arr: A slice of integers to be sorted.
+//
+// Returns:
+//   - A new sorted slice of integers.
+//
+// Example:
+//
+//	input := []int{4, 2, 7, 1, 9}
+//	output := MergeSort(input)
+//	fmt.Println(output) // Output: [1, 2, 4, 7, 9]
 func MergeSort(arr []int) []int {
 	array_len := len(arr)
 	if array_len <= 1 {

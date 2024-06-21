@@ -1,3 +1,4 @@
+// https://leetcode.com/problems/two-sum/description/
 package main
 
 // func main() {
@@ -7,8 +8,7 @@ package main
 // 	print(output, target)
 // }
 
-//lint:ignore U1000 Ignore unused function temporarily for debugging
-
+//lint:ignore U1000 I
 func twoSum(nums []int, target int) []int {
 	value_to_index := make(map[int]int)
 

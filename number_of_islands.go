@@ -1,3 +1,4 @@
+// https://leetcode.com/problems/number-of-islands/description/
 package main
 
 import (
@@ -5,7 +6,7 @@ import (
 	"errors"
 )
 
-//lint:ignore U1000 Ignore unused function temporarily for debugging
+//lint:ignore U1000 Ignore
 func getgrid() [][]byte {
 	// Given input string
 	input := `[["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]`
@@ -34,7 +35,7 @@ func getgrid() [][]byte {
 // 	print(islands)
 // }
 
-//lint:ignore U1000 Ignore unused function temporarily for debugging
+//lint:ignore U1000 Ignore
 func numIslands(grid [][]byte) int {
 	make_byte_array_non_retarded(&grid)
 	g := *NewGrid(grid)
