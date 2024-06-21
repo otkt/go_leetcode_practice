@@ -1,20 +1,18 @@
 package main
 
 type FreqStack struct {
-	element_freq  map[int]int
-	element_index map[int][]int
-	freq_element  map[int][]int
-	most_freq     int
-	stack         []int
+	element_freq map[int]int
+	freq_element map[int][]int
+	most_freq    int
+	stack        []int
 }
 
 func Constructor() FreqStack {
 	return FreqStack{
-		element_freq:  make(map[int]int),   // Initialize element_freq map
-		element_index: make(map[int][]int), // Initialize element_index map
-		freq_element:  make(map[int][]int), // Initialize freq_element map
-		most_freq:     0,
-		stack:         []int{},
+		element_freq: make(map[int]int),   // Initialize element_freq map
+		freq_element: make(map[int][]int), // Initialize freq_element map
+		most_freq:    0,
+		stack:        []int{},
 	}
 }
 
@@ -31,23 +29,26 @@ func (this *FreqStack) Push(val int) {
 
 	//freq_element update
 	//first remove the element from freq
-	freq_to_remove := this.element_freq[val] - 1
-	if freq_to_remove > 0 {
-		for i, elem := range this.freq_element[freq_to_remove] {
-			if elem == val {
-				this.freq_element[freq_to_remove] = append(this.freq_element[freq_to_remove][0:i], this.freq_element[freq_to_remove][i+1:]...)
-			}
-		}
-	}
+	// freq_to_remove := this.element_freq[val] - 1
+	// if freq_to_remove > 0 {
+	// 	for i, elem := range this.freq_element[freq_to_remove] {
+	// 		if elem == val {
+	// 			this.freq_element[freq_to_remove] = append(this.freq_element[freq_to_remove][0:i], this.freq_element[freq_to_remove][i+1:]...)
+	// 		}
+	// 	}
+	// }
+	// if len(this.freq_element[freq_to_remove]) == 0 {
+	// 	delete(this.freq_element, freq_to_remove)
+	// }
 	//second add to new freq
-	freq := freq_to_remove + 1
-	for i, elem := range this.freq_element[freq] {
-		if elem == val {
-			this.freq_element[freq] = append(this.freq_element[freq][0:i], this.freq_element[freq][i+1:]...)
-		}
-	}
+	// freq := this.element_freq[val]
+	// for i, elem := range this.freq_element[freq] {
+	// 	if elem == val {
+	// 		this.freq_element[freq] = append(this.freq_element[freq][0:i], this.freq_element[freq][i+1:]...)
+	// 	}
+	// }
 
-	this.freq_element[freq] = append(this.freq_element[freq], val)
+	this.freq_element[this.element_freq[val]] = append(this.freq_element[this.element_freq[val]], val)
 
 	//update most_freqq
 	if this.element_freq[val] > this.most_freq {
@@ -65,9 +66,10 @@ func (this *FreqStack) Pop() int {
 	if len(this.freq_element[this.most_freq]) == 0 {
 		delete(this.freq_element, this.most_freq)
 	}
+
 	// update this.most_freq
 	new_most_freq := 0
-	for i := (this.most_freq - 1); i > 0; i-- {
+	for i := (this.most_freq); i > 0; i-- {
 		if _, ok := this.freq_element[i]; ok {
 			new_most_freq = i
 			break
@@ -86,6 +88,7 @@ func (this *FreqStack) Pop() int {
 		elem := this.stack[i]
 		if elem == latest_most_freq_elemt {
 			stack_index = i
+			break
 		}
 	}
 	//update stack
@@ -97,8 +100,16 @@ func (this *FreqStack) Pop() int {
 func main() {
 	obj := Constructor()
 	obj.Push(5)
-	param_2 := obj.Pop()
-	print(param_2)
+	obj.Push(7)
+	obj.Push(5)
+	obj.Push(7)
+	obj.Push(4)
+	obj.Push(5)
+	p0 := obj.Pop()
+	p1 := obj.Pop()
+	p2 := obj.Pop()
+	p3 := obj.Pop()
+	print(p0, p1, p2, p3)
 }
 
 /**
