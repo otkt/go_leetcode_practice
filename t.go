@@ -1,23 +1,43 @@
 package main
 
-import "errors"
+import (
+	"encoding/json"
+	"errors"
+)
+
+func getgrid() [][]byte {
+	// Given input string
+	input := `[["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]`
+
+	var arr [][]string
+	err := json.Unmarshal([]byte(input), &arr)
+	if err != nil {
+		panic(err)
+	}
+
+	var result [][]byte
+	for _, row := range arr {
+		var byteRow []byte
+		for _, str := range row {
+			byteRow = append(byteRow, str[0]) // assuming each string is a single character "0" or "1"
+		}
+		result = append(result, byteRow)
+	}
+
+	return result
+}
 
 func main() {
-	// grid := [][]string{
-	// 	{"1", "1", "1", "1", "0"},
-	// 	{"1", "1", "0", "1", "0"},
-	// 	{"1", "1", "0", "0", "0"},
-	// 	{"0", "0", "0", "0", "0"},
-	// }
-	grid := [][]byte{
-		{1, 1, 1, 1, 0},
-		{1, 1, 0, 1, 0},
-		{1, 1, 0, 0, 0},
-		{0, 0, 1, 0, 0},
-	}
+	grid := getgrid()
+	islands := numIslands(grid)
+	print(islands)
+}
+
+func numIslands(grid [][]byte) int {
+	make_byte_array_non_retarded(&grid)
 	g := *NewGrid(grid)
 	island_count := g.paint_islands()
-	print(int(island_count))
+	return int(island_count)
 }
 
 func make_byte_array_non_retarded(arr *[][]byte) {
@@ -80,16 +100,24 @@ func (cq *CoordinateQueue) dequeue() (Coordinate, error) {
 func (g *Grid) valid_neighboors(x, y int) []Coordinate {
 	list := []Coordinate{}
 	if x > 0 {
-		list = append(list, Coordinate{x: x - 1, y: y, val: &g.arr[x-1][y]})
+		if g.arr[x-1][y] == 1 {
+			list = append(list, Coordinate{x: x - 1, y: y, val: &g.arr[x-1][y]})
+		}
 	}
 	if y > 0 {
-		list = append(list, Coordinate{x: x, y: y - 1, val: &g.arr[x][y-1]})
+		if g.arr[x][y-1] == 1 {
+			list = append(list, Coordinate{x: x, y: y - 1, val: &g.arr[x][y-1]})
+		}
 	}
 	if x < g.m-1 {
-		list = append(list, Coordinate{x: x + 1, y: y, val: &g.arr[x+1][y]})
+		if g.arr[x+1][y] == 1 {
+			list = append(list, Coordinate{x: x + 1, y: y, val: &g.arr[x+1][y]})
+		}
 	}
 	if y < g.n-1 {
-		list = append(list, Coordinate{x: x, y: y + 1, val: &g.arr[x][y+1]})
+		if g.arr[x][y+1] == 1 {
+			list = append(list, Coordinate{x: x, y: y + 1, val: &g.arr[x][y+1]})
+		}
 	}
 	return list
 }
@@ -117,18 +145,23 @@ func (g *Grid) get_coordinate(x, y int) Coordinate {
 	return Coordinate{x: x, y: y, val: &g.arr[x][y]}
 }
 
-func (g *Grid) paint_islands() byte {
+func (g *Grid) paint_islands() int32 {
 	var marking byte = 1
+	var islands int32 = 0
 	var coordinate_queue CoordinateQueue = CoordinateQueue{}
 	for i := range g.m {
 		for j := range g.n {
 			if g.arr[i][j] == 1 {
 				marking++
+				islands++
+				if marking == 255 {
+					marking = 2
+				}
 				coord := g.get_coordinate(i, j)
 				coordinate_queue.enqueue(g, coord.x, coord.y)
 				g.mark_neighboors(marking, &coordinate_queue)
 			}
 		}
 	}
-	return marking - 1
+	return islands
 }
