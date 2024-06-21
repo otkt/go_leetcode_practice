@@ -94,17 +94,23 @@ func (g *Grid) valid_neighboors(x, y int) []Coordinate {
 	return list
 }
 
-func (g *Grid) mark_neighboors(c Coordinate, val byte, cq *CoordinateQueue) {
-	*c.val = val
-	for _, n := range g.valid_neighboors(c.x, c.y) {
-		if *n.val == 1 {
-			cq.enqueue(g, n.x, n.y)
+func (g *Grid) mark_neighboors(val byte, cq *CoordinateQueue) {
+	cont := true
+
+	for cont {
+		popped, err := cq.dequeue()
+		if err == nil {
+			*popped.val = val
+			for _, n := range g.valid_neighboors(popped.x, popped.y) {
+				if *n.val == 1 {
+					cq.enqueue(g, n.x, n.y)
+				}
+			}
+		} else {
+			cont = false
 		}
 	}
-	popped, err := cq.dequeue()
-	if err == nil {
-		g.mark_neighboors(popped, val, cq)
-	}
+
 }
 
 func (g *Grid) get_coordinate(x, y int) Coordinate {
@@ -119,8 +125,8 @@ func (g *Grid) paint_islands() byte {
 			if g.arr[i][j] == 1 {
 				marking++
 				coord := g.get_coordinate(i, j)
-				//coordinate_queue.enqueue(&g, coord.x, coord.y)
-				g.mark_neighboors(coord, marking, &coordinate_queue)
+				coordinate_queue.enqueue(g, coord.x, coord.y)
+				g.mark_neighboors(marking, &coordinate_queue)
 			}
 		}
 	}
