@@ -2,6 +2,8 @@
 
 package main
 
+import "encoding/json"
+
 //lint:ignore U1000 I
 func getAncestors(n int, edges [][]int) [][]int {
 	directAncestor := make(map[int][]int)
@@ -96,15 +98,15 @@ func mergesorte(a_sorted []int, b_sorted []int) []int {
 	return mergesorted
 }
 
-// func ConvertStringTo2DIntArray(input string) ([][]int, error) {
-// 	var result [][]int
-// 	err := json.Unmarshal([]byte(input), &result)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+func ConvertStringTo2DIntArray(input string) ([][]int, error) {
+	var result [][]int
+	err := json.Unmarshal([]byte(input), &result)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return result, nil
-// }
+	return result, nil
+}
 
 // func main() {
 // 	// Example usage
