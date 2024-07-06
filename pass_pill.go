@@ -13,6 +13,6 @@ func passThePillow(n int, time int) int {
 	}
 }
 
-func main() {
-	print(passThePillow(5, 10))
-}
+// func main() {
+// 	print(passThePillow(5, 10))
+// }
